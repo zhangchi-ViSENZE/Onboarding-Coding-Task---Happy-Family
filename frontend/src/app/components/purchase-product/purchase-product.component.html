@@ -1,0 +1,27 @@
+<div class="purchase">
+  <h3>Purchase Product</h3>
+
+  <form #productInfo="ngForm" (ngSubmit)="onSubmit(productInfo.value)">
+    <label for="product-name">Product Name</label>
+    <br />
+    <input
+      id="product-name"
+      type="text"
+      name="name"
+      placeholder="e.g. milk"
+      ngModel
+    />
+    <br />
+    <input
+      id="product-quantity"
+      type="text"
+      name="quantity"
+      placeholder="e.g. 30"
+      ngModel
+    />
+    <input type="submit" value="purchase" />
+  </form>
+
+  <app-product *ngIf="product" [product]="product"></app-product>
+  <div class="error-msg" *ngIf="errorMsg">{{ errorMsg }}</div>
+</div>

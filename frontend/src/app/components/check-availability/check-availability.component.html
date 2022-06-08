@@ -1,0 +1,39 @@
+<div class="check-availability">
+  <!-- <form #userlogin = "ngForm" (ngSubmit)="onSubmit()">
+
+    <div>
+      <label for="productName">
+        Product Name
+      </label>
+      <input id="productName" type="text" formControlName="productName" ngModel>
+    </div>
+  
+    <div>
+      <label for="quantity">
+        Quantity
+      </label>
+      <input id="quantity" type="text" formControlName="quantity" ngModel>
+    </div>
+  
+    <button class="button" type="submit">Check</button>
+  
+  </form> -->
+
+  <h3>Check Product Availability</h3>
+
+  <form #productInfo="ngForm" (ngSubmit)="onSubmit(productInfo.value)">
+    <label for="product-name">Product Name</label>
+    <br />
+    <input
+      id="product-name"
+      type="text"
+      name="name"
+      placeholder="e.g. milk"
+      ngModel
+    />
+    <input type="submit" value="submit" />
+  </form>
+
+  <app-product *ngIf="product" [product]="product"></app-product>
+  <div class="error-msg" *ngIf="errorMsg">{{ errorMsg }}</div>
+</div>

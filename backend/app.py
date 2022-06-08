@@ -1,82 +1,108 @@
 from database import *
-from flask import Flask, jsonify, make_response, render_template, request, send_file
+from flask import Flask
+from flask import abort
+from flask import jsonify
+from flask import render_template
+from flask import request
+from flask import json
+from werkzeug.exceptions import HTTPException
+from flask_cors import CORS
 
-app=Flask(__name__)
+app = Flask(__name__)
+CORS(app)
+
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
 # query store for product availability
-@app.route("/store/<has_product>", methods = ['GET'])
+
+
+@app.route("/store/<has_product>", methods=['GET'])
 def query_product(has_product):
     # process the url
     product_name = has_product[3:]
-    
+
     # set up database connection
     conn = create_connection('database.db')
 
-    quantity = select_product_by_product_name(conn,product_name)
+    product = select_product_by_product_name(conn, product_name)
+
     # terminate database connection
     terminate_connection(conn)
 
-    if quantity:
-        resp = jsonify(quantity)
-        resp.status_code = 200
-        return resp
+    if product:
+        quantity = product[0][1]
+        response = jsonify({"name": product_name, "quantity": quantity})
+        response.status_code = 200
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response
     else:
         print('Product name incorrect!')
-        return 'Not found', 404
+        abort(404, {"error_msg": 'Product not found'})
 
 # buy product from store
-@app.route("/store/<buy_product>", methods = ['POST'])
+
+
+@app.route("/store/<buy_product>", methods=['POST'])
 def buy_product(buy_product):
     # process the url
     product_name = buy_product[3:]
-    
+
     # set up database connection
     conn = create_connection('database.db')
 
-    product = select_product_by_product_name(conn,product_name)
+    product = select_product_by_product_name(conn, product_name)
 
     if not product:
         print('Product name incorrect!')
-        return {
-                "error_code": 404,
-                "error_msg": 'Product not found and Unsuccessful Purchase'
-                },404
-    
-    product = product[0]
-    quantity = product[2]
-    req_quantity = int(request.args['quantity'])
+        return abort(404, {
+            "error_msg": 'Product not found and Unsuccessful Purchase'
+        })
+
+    product_name = product[0][0]
+    quantity = product[0][1]
+    req_quantity = int(request.args.get('quantity'))
 
     if req_quantity <= 0:
         print('Product quantity invalid! Should be a positive integer.')
-        return {
-                "error_code": 101,
-                "error_msg": 'Parameter must be a positive integer.'
-                },400
+        abort(400, {
+            "error_msg": 'Parameter must be a positive integer.'
+        })
 
     if quantity < req_quantity:
         print('Product quantity invalid! Should be smaller than the avaliability.')
-        return {
-                "error_code": 400,
-                "error_msg": 'Parameter must be smaller than the current avaliability.'
-                },400
+        return abort(400, {
+            "error_msg": 'Parameter must be smaller than the current avaliability.'
+        })
 
-    update_product(conn,(product[1],quantity-req_quantity,product[3],product[0]))
+    update_product(conn, (quantity-req_quantity, product_name))
 
     # terminate database connection
     terminate_connection(conn)
 
-    return "Successful Purchase",200
-        
+    response = jsonify({"name": product_name, "quantity": req_quantity})
+    response.status_code = 200
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    print(response)
+    return response
+
+
+@app.errorhandler(HTTPException)
+def handle_exception(e):
+    # start with the correct headers and status code from the error
+    response = e.get_response()
+    # replace the body with JSON
+    response.data = json.dumps({
+        "error_code": e.code,
+        "error_msg": e.description["error_msg"],
+    })
+    response.content_type = "application/json"
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
 
 if __name__ == '__main__':
-    app.debug=True
+    app.debug = True
     app.run()
-    
-#     conn = create_connection('database.db')
-#     select_all_products(conn)
-#     select_product_by_product_name(conn,'milk')
-#     terminate_connection(conn)
