@@ -33,10 +33,10 @@ Then he should get 1 milk carton and 12 eggs if eggs are on stock.
 | --- | --- | --- | --- | ---|
 | GET | /store/hasmilk | queries store for milk availability | - | quantity of milk available |
 | GET | /store/haseggs | queries store for eggs availability | - | quantity of eggs available |
-| GET | /store/has'*AnyProductName*' | queries store for '*AnyProductName*' availability | - | quantity of '*AnyProductName*' available |
+| GET | /store/has*AnyProductName* | queries store for *AnyProductName* availability | - | quantity of '*AnyProductName*' available |
 | POST | /store/buymilk | buys milk from store | quantity | quantity of milk bought |
 | POST | /store/hasmilk | buys eggs from store | quantity | quantity of milk bought |
-| POST | /store/buy'*AnyProductName*' | buys *AnyProductName* from store | quantity | quantity of '*AnyProductName*' bought |
+| POST | /store/buy*AnyProductName* | buys *AnyProductName* from store | quantity | quantity of *AnyProductName* bought |
 
 #### **Constraints**
 the API server must be up, and the service must be started
@@ -83,4 +83,3 @@ the API server must be up, and the service must be started
 [Angular Project - angular-crash-2021](https://github.com/bradtraversy/angular-crash-2021)
 
 [Flask Handling Application Errors](https://flask.palletsprojects.com/en/2.1.x/errorhandling/)
-
