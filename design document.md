@@ -16,7 +16,7 @@ Then he should get 1 milk carton and 12 eggs if eggs are on stock.
 
 ## Design
 ### Architecture
-(provide a class/component diagram to illustrate the architecture. Set the scope of development)
+![Architecture illustration](/Architecture%20Illustration.png)
 
 **Basic structure**
 - Frontend: Angular
