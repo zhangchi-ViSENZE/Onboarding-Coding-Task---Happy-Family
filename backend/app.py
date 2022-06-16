@@ -22,7 +22,7 @@ def index():
 @app.route("/store/<has_product>", methods=['GET'])
 def query_product(has_product):
     # process the url
-    product_name = has_product[3:]
+    product_name = has_product
 
     # set up database connection
     conn = create_connection('database.db')
@@ -48,7 +48,7 @@ def query_product(has_product):
 @app.route("/store/<buy_product>", methods=['POST'])
 def buy_product(buy_product):
     # process the url
-    product_name = buy_product[3:]
+    product_name = buy_product
 
     # set up database connection
     conn = create_connection('database.db')

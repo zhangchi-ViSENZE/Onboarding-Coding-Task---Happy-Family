@@ -35,7 +35,7 @@ export class ProductService {
 
   getProduct(productName: string) {
     return this.http
-      .get<Product>(this.baseurl + "/store/has" + productName)
+      .get<Product>(this.baseurl + "/store/" + productName)
       .pipe(catchError(this.handleError));
   }
 
@@ -49,7 +49,7 @@ export class ProductService {
     console.log({ quantity: product.quantity });
     return this.http
       .post<Product>(
-        this.baseurl + "/store/buy" + product.name,
+        this.baseurl + "/store/" + product.name,
         null,
         httpOptions
       )

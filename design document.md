@@ -31,12 +31,12 @@ Then he should get 1 milk carton and 12 eggs if eggs are on stock.
 ### API specification
 | Method | Name | Description | Param | Response
 | --- | --- | --- | --- | ---|
-| GET | /store/hasmilk | queries store for milk availability | - | quantity of milk available |
-| GET | /store/haseggs | queries store for eggs availability | - | quantity of eggs available |
-| GET | /store/has*AnyProductName* | queries store for *AnyProductName* availability | - | quantity of '*AnyProductName*' available |
-| POST | /store/buymilk | buys milk from store | quantity | quantity of milk bought |
-| POST | /store/hasmilk | buys eggs from store | quantity | quantity of milk bought |
-| POST | /store/buy*AnyProductName* | buys *AnyProductName* from store | quantity | quantity of *AnyProductName* bought |
+| GET | /store/milk | queries store for milk availability | - | quantity of milk available |
+| GET | /store/eggs | queries store for eggs availability | - | quantity of eggs available |
+| GET | /store/*AnyProductName* | queries store for *AnyProductName* availability | - | quantity of '*AnyProductName*' available |
+| POST | /store/milk | buys milk from store | quantity (positive integer e.g. 1,2,3) | quantity of milk bought |
+| POST | /store/milk | buys eggs from store | quantity (positive integer e.g. 1,2,3) | quantity of milk bought |
+| POST | /store/*AnyProductName* | buys *AnyProductName* from store | quantity (positive integer e.g. 1,2,3) | quantity of *AnyProductName* bought |
 
 #### **Constraints**
 the API server must be up, and the service must be started
@@ -44,10 +44,10 @@ the API server must be up, and the service must be started
 #### **Example request and respond**
 | Method | Name | Description | Param | Response
 | --- | --- | --- | --- | ---|
-| GET | /store/hasmilk | queries store for milk availability | - | {"name": "milk","quantity": 23} |
-| GET | /store/haseggs | queries store for eggs availability | - | {"name": "eggs","quantity": 92} |
-| POST | /store/buymilk | buys milk from store | quantity=2 | {"name": "milk", "quantity": 2} |
-| POST | /store/hasmilk | buys eggs from store | quantity=30 | {"name": "eggs", "quantity": 30} |
+| GET | /store/milk | queries store for milk availability | - | {"name": "milk","quantity": 23} |
+| GET | /store/eggs | queries store for eggs availability | - | {"name": "eggs","quantity": 92} |
+| POST | /store/milk | buys milk from store | quantity=2 | {"name": "milk", "quantity": 2} |
+| POST | /store/milk | buys eggs from store | quantity=30 | {"name": "eggs", "quantity": 30} |
 
 #### **Error message**
 | Description | Response |
